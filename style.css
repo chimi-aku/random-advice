@@ -5,21 +5,48 @@
 }
 
 html {
-    font-size: 10rem;
+    font-size: 10px;
 }
 
 body {
     height: 100vh;
     background-color: #222;
+    position: relative;
 }
 
-.draw_advice_btn {
+.section {
+    transition: left .7s ease-out;
 }
 
-.show_favourites_btn {
+.main_section {
+    height: 50rem;
+    width: 36rem;
+}
+
+.active {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.unactive {
+    position: absolute;
+    top: 50%;
+    left: 1000%;
+    transform: translate(-50%, -50%);
+}
+
+.btns {
+    height: 6rem;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .result {
+    height: 40rem;
 }
 
 .btn {
@@ -30,6 +57,7 @@ body {
     text-decoration: none;
     border: 0.2em solid aqua;
     padding: 0.5em 1em;
+    outline: none;
 }
 
 .btn::before {
@@ -69,4 +97,34 @@ body {
 }
 .btn:hover::after {
     left: 80%;
+}
+
+/* FAVS ADVICES */
+
+.favs_adives_section {
+    height: 50rem;
+    width: 36rem;
+}
+
+.return_btn {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+}
+
+.arrow {
+    border: solid aqua;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.favs_adives {
+    margin-top: 8rem;
+    min-height: 42rem;
 }

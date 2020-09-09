@@ -7,9 +7,19 @@
         <link rel="stylesheet" href="./style.css" />
     </head>
     <body>
-        <button class="draw_advice_btn btn">draw advice</button>
-        <button class="show_favourites_btn btn">show favourites</button>
-        <section class="result"></section>
+        <div class="main_section section active">
+            <div class="btns">
+                <button class="draw_advice_btn btn">draw advice</button>
+                <button class="show_favourites_btn btn">show favourites</button>
+            </div>
+            <section class="result"></section>
+        </div>
+        <div class="favs_adives_section section unactive">
+            <button class="btn return_btn">
+                <i class="arrow left"></i>
+            </button>
+            <section class="favs_adives"></section>
+        </div>
         <script src="./script.js"></script>
     </body>
 </html>
