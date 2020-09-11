@@ -10,7 +10,8 @@ const favsAdives = document.querySelector('.favs_adives');
 const result = document.querySelector('.result');
 let starUnClickedIconOfDrawnAdvice;
 let starClickedIconOfDrawnAdvice;
-let starIconOfFavouritesAdvices;
+let starUnClickedIconOfFavouritesAdvices;
+let starClickedIconOfFavouritesAdvices;
 
 const favouriteAdvices = [];
 
@@ -79,20 +80,11 @@ function renderFavouriteAdvices() {
         favsAdives.appendChild(advice);
     }
 
-    starIconOfFavouritesAdvices = document.querySelectorAll('.favourite');
-
-    console.log(starIconOfFavouritesAdvices);
 
     // Add event listener to star icon
-    starIconOfDrawnAdvice = document.querySelector('.favs_adives .icon-star ');
-    console.log(starIconOfDrawnAdvice);
-    if (starIconOfDrawnAdvice != null) {
-        starIconOfDrawnAdvice.addEventListener('click', function (e) {
-            changeStarColor();
-            addAdviceToFavourite(e);
-            removeAdviceFromFavourites(e);
-        });
-    }
+    addEventListenerForClickedFavsStars();
+    addEventListenerForUnClickedFavStars();
+
 }
 
 function setStarColor() {
@@ -100,6 +92,9 @@ function setStarColor() {
     // Add event listener to star icon
     addEventListenerForUnClickedDrawnStar();
     addEventListenerForClickedDrawnStar();
+
+    addEventListenerForClickedFavsStars();
+    addEventListenerForUnClickedFavStars();
 }
 
 function unsetStarColor() {
@@ -107,6 +102,9 @@ function unsetStarColor() {
     // Add event listener to star icon
     addEventListenerForUnClickedDrawnStar();
     addEventListenerForClickedDrawnStar();
+
+    addEventListenerForClickedFavsStars();
+    addEventListenerForUnClickedFavStars();
 }
 
 // AddingListners Functions
@@ -130,6 +128,37 @@ function addEventListenerForClickedDrawnStar() {
     if (starClickedIconOfDrawnAdvice != null) {
         starClickedIconOfDrawnAdvice.addEventListener('click', function (e) {
             unsetStarColor();
+            removeAdviceFromFavourite(e);
+            console.log(favouriteAdvices);
+        });
+    }
+}
+
+function addEventListenerForClickedFavsStars() {
+    starClickedIconOfFavouritesAdvices = document.querySelectorAll('.favs_adives  .favourite');
+    //console.log(starClickedIconOfFavouritesAdvices);
+    if (starClickedIconOfFavouritesAdvices != null) {
+        starClickedIconOfFavouritesAdvices.forEach((item, index) => {
+            item.addEventListener('click', e =>{
+                unsetStarColor();
+                removeAdviceFromFavourite(e);
+                console.log(favouriteAdvices);
+            })
+        });
+    }
+}
+
+function addEventListenerForUnClickedFavStars() {
+    starUnClickedIconOfFavouritesAdvices = document.querySelectorAll(
+        '.favs_adives .icon-star'
+    );
+    //console.log(starUnClickedIconOfFavouritesAdvices;);
+    if (starUnClickedIconOfFavouritesAdvices != null) {
+        starUnClickedIconOfFavouritesAdvices.forEach((item, index) => {
+            item.addEventListener('click', e =>{
+                setStarColor();
+                addAdviceFromFavourite(e);
+            })
         });
     }
 }
@@ -156,6 +185,21 @@ function addAdviceToFavourite(e) {
 
         if (!isThisAlreadyAdviceExists) favouriteAdvices.push(newFavAdvice);
     }
+}
+
+function removeAdviceFromFavourite(e) {
+    console.log('remove');
+    console.log(e.target.parentNode);
+    const adviceToRemove = e.target.parentNode;
+    let indexToRemove;
+
+    favouriteAdvices.forEach((item, index) =>{
+        if(adviceToRemove.dataset.id == item.id){
+            indexToRemove = index;
+        }
+    });
+
+    favouriteAdvices.splice(indexToRemove, 1);
 }
 
 // Using API
