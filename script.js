@@ -13,7 +13,7 @@ let starClickedIconOfDrawnAdvice;
 let starUnClickedIconOfFavouritesAdvices;
 let starClickedIconOfFavouritesAdvices;
 
-const favouriteAdvices = [];
+let favouriteAdvices = [];
 
 class Advice {
     constructor(adviceText, id) {
@@ -31,6 +31,15 @@ function swapFavMainSections() {
     favsSadivesSection.classList.toggle('unactive');
 
     console.log(favouriteAdvices);
+    // Add event listener to star icon
+    addEventListenerForUnClickedDrawnStar();
+    addEventListenerForClickedDrawnStar();
+
+    addEventListenerForClickedFavsStars();
+    addEventListenerForUnClickedFavStars();
+
+    //Clear result drawn advice
+    result.innerHTML = '';
 }
 
 function renderDrawnAdvice(newAdvice, place) {
@@ -87,23 +96,23 @@ function renderFavouriteAdvices() {
 
 }
 
-function setStarColor() {
-    starUnClickedIconOfDrawnAdvice.classList.add('favourite');
+function setStarColor(e) {
+    e.target.classList.add('favourite');
     // Add event listener to star icon
     addEventListenerForUnClickedDrawnStar();
     addEventListenerForClickedDrawnStar();
 
     addEventListenerForClickedFavsStars();
-    addEventListenerForUnClickedFavStars();
+    //addEventListenerForUnClickedFavStars();
 }
 
-function unsetStarColor() {
-    starClickedIconOfDrawnAdvice.classList.remove('favourite');
+function unsetStarColor(e) {
+    e.target.classList.remove('favourite');
     // Add event listener to star icon
     addEventListenerForUnClickedDrawnStar();
     addEventListenerForClickedDrawnStar();
 
-    addEventListenerForClickedFavsStars();
+    //addEventListenerForClickedFavsStars();
     addEventListenerForUnClickedFavStars();
 }
 
@@ -116,7 +125,7 @@ function addEventListenerForUnClickedDrawnStar() {
     //console.log(starUnClickedIconOfDrawnAdvice);
     if (starUnClickedIconOfDrawnAdvice != null) {
         starUnClickedIconOfDrawnAdvice.addEventListener('click', function (e) {
-            setStarColor();
+            setStarColor(e);
             addAdviceToFavourite(e);
         });
     }
@@ -127,22 +136,23 @@ function addEventListenerForClickedDrawnStar() {
     //console.log(starClickedIconOfDrawnAdvice);
     if (starClickedIconOfDrawnAdvice != null) {
         starClickedIconOfDrawnAdvice.addEventListener('click', function (e) {
-            unsetStarColor();
+            unsetStarColor(e);
             removeAdviceFromFavourite(e);
-            console.log(favouriteAdvices);
+            //console.log(favouriteAdvices);
         });
     }
 }
 
 function addEventListenerForClickedFavsStars() {
-    starClickedIconOfFavouritesAdvices = document.querySelectorAll('.favs_adives  .favourite');
+    starClickedIconOfFavouritesAdvices = document.querySelectorAll('.favs_adives .favourite');
     //console.log(starClickedIconOfFavouritesAdvices);
     if (starClickedIconOfFavouritesAdvices != null) {
         starClickedIconOfFavouritesAdvices.forEach((item, index) => {
             item.addEventListener('click', e =>{
-                unsetStarColor();
+                unsetStarColor(e);
                 removeAdviceFromFavourite(e);
-                console.log(favouriteAdvices);
+                //console.log('listening - Clicked');
+
             })
         });
     }
@@ -152,12 +162,13 @@ function addEventListenerForUnClickedFavStars() {
     starUnClickedIconOfFavouritesAdvices = document.querySelectorAll(
         '.favs_adives .icon-star'
     );
-    //console.log(starUnClickedIconOfFavouritesAdvices;);
+    //console.log(starUnClickedIconOfFavouritesAdvices);
     if (starUnClickedIconOfFavouritesAdvices != null) {
         starUnClickedIconOfFavouritesAdvices.forEach((item, index) => {
             item.addEventListener('click', e =>{
-                setStarColor();
-                addAdviceFromFavourite(e);
+                setStarColor(e);
+                addAdviceToFavourite(e);
+                //console.log('listening - Unclicked');
             })
         });
     }
@@ -184,6 +195,7 @@ function addAdviceToFavourite(e) {
         //console.log(isThisAlreadyAdviceExists);
 
         if (!isThisAlreadyAdviceExists) favouriteAdvices.push(newFavAdvice);
+        updateLocalStorage();
     }
 }
 
@@ -200,6 +212,7 @@ function removeAdviceFromFavourite(e) {
     });
 
     favouriteAdvices.splice(indexToRemove, 1);
+    updateLocalStorage();
 }
 
 // Using API
@@ -213,6 +226,23 @@ function getAdvice() {
             renderDrawnAdvice(newAdvice, result);
         });
 }
+
+// Local Storage
+function updateLocalStorage() {
+    if(typeof localStorage !== 'undefined') {
+        localStorage.removeItem('user\'s advices');
+        localStorage.setItem('user\'s advices', JSON.stringify(favouriteAdvices));
+    }
+}
+
+function loadAdvicesFromLocalStorage(){
+    if(typeof localStorage !== "undefined" && localStorage.getItem('user\'s advices') != 'undefined') {
+        favouriteAdvices = JSON.parse(localStorage.getItem('user\'s advices'));
+    }
+}
+
+loadAdvicesFromLocalStorage();
+console.log(favouriteAdvices);
 
 drawAdviceBtn.addEventListener('click', getAdvice);
 showFavouritesBtn.addEventListener('click', renderFavouriteAdvices);
