@@ -6,6 +6,7 @@
 
 html {
     font-size: 10px;
+    overflow-x: hidden;
 }
 
 body {
@@ -138,9 +139,42 @@ body {
     width: 80%;
     height: auto;
     padding: 0.5rem 1rem;
+    padding-top: 4rem;
     font-size: 3.5rem;
     font-family: 'Patrick Hand', cursive;
     text-align: center;
     color: aqua;
+    position: relative;
 }
 
+.icon-star {
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    top: .1rem;
+    left: .1rem;
+    color: rgb(110, 100, 100);
+    
+    transition: all .2s;
+    
+}
+
+.icon-star:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.icon-star:active {
+    transform: scale(.95);
+}
+
+.favourite {
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    top: .1rem;
+    left: .1rem;
+    color: aqua;
+    
+    transition: all .2s;
+}
