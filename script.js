@@ -30,7 +30,7 @@ function swapFavMainSections() {
     favsSadivesSection.classList.toggle('active');
     favsSadivesSection.classList.toggle('unactive');
 
-    console.log(favouriteAdvices);
+    //console.log(favouriteAdvices);
     // Add event listener to star icon
     addEventListenerForUnClickedDrawnStar();
     addEventListenerForClickedDrawnStar();
@@ -68,7 +68,7 @@ function renderDrawnAdvice(newAdvice, place) {
 }
 
 function renderFavouriteAdvices() {
-    console.log(favouriteAdvices);
+    //console.log(favouriteAdvices);
     //Clearing
     favsAdives.innerHTML = '';
 
@@ -200,8 +200,8 @@ function addAdviceToFavourite(e) {
 }
 
 function removeAdviceFromFavourite(e) {
-    console.log('remove');
-    console.log(e.target.parentNode);
+    //console.log('remove');
+    //console.log(e.target.parentNode);
     const adviceToRemove = e.target.parentNode;
     let indexToRemove;
 
@@ -220,11 +220,21 @@ function removeAdviceFromFavourite(e) {
 function getAdvice() {
     const url = 'https://api.adviceslip.com/advice';
     fetch(url)
-        .then((response) => response.json())
+        .then(response =>{ 
+            if(response.ok)
+                return response.json();
+            else
+                throw new Error('Cannot download random advice')
+        })
         .then((data) => {
             const newAdvice = new Advice(data.slip.advice, data.slip.id);
             renderDrawnAdvice(newAdvice, result);
-        });
+        })
+        .catch( error => {
+            console.log(error);
+            alert(error);
+        })
+
 }
 
 // Local Storage
@@ -242,7 +252,7 @@ function loadAdvicesFromLocalStorage(){
 }
 
 loadAdvicesFromLocalStorage();
-console.log(favouriteAdvices);
+//console.log(favouriteAdvices);
 
 drawAdviceBtn.addEventListener('click', getAdvice);
 showFavouritesBtn.addEventListener('click', renderFavouriteAdvices);
